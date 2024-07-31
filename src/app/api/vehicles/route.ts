@@ -30,7 +30,9 @@ export async function GET(request: NextRequest) {
         $project: {
           _id: 1,
           brand: 1,
+          model: 1,
           variant: 1,
+          deliveryStart: 1,
         },
       },
     ])

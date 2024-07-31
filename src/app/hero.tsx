@@ -27,7 +27,7 @@ export function Hero({ title, subtitle }: Props) {
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          py={[16, 16, 24]}
+          py={[12, 16, 24]}
         >
           <Typography component="h1" variant="h1" color="white" fontWeight="strong" gutterBottom>
             {title}

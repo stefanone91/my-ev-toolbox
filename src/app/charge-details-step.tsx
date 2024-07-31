@@ -54,7 +54,10 @@ export function ChargeDetailsStep({ onSubmit }: Props) {
                     value={field.value || null}
                     loading={isFetching}
                     isOptionEqualToValue={(option, value) => option._id === value._id}
-                    getOptionLabel={(car) => `${car.brand} ${car.variant}`}
+                    getOptionLabel={(car) => {
+                      const carYear = car.deliveryStart ? " (" + new Date(car.deliveryStart).getFullYear() + ")" : "";
+                      return `${car.brand} ${car.variant}${carYear}`;
+                    }}
                     getOptionKey={(car) => car._id.toString()}
                     filterOptions={(x) => x}
                     onChange={(evt, value) => {

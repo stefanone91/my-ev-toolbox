@@ -18,7 +18,7 @@ export default function Home() {
     <>
       <Hero title="My EV Toolbox" subtitle="A simple calculator for your EV charge" />
 
-      <Container maxWidth="md" sx={{ marginTop: -10, position: "relative", marginBottom: 4 }}>
+      <Container maxWidth="md" sx={{ marginTop: [-6, -10], position: "relative", marginBottom: 4 }}>
         <Box>
           <ChargeDetailsStep onSubmit={setFormData} />
         </Box>

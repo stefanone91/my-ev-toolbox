@@ -130,4 +130,4 @@ export interface ChargeCurveStep {
   soc: number;
   kw: number;
 }
-export type VehiclePartial = Pick<Vehicle, "_id" | "brand" | "model" | "variant">;
+export type VehiclePartial = Pick<Vehicle, "_id" | "brand" | "model" | "variant" | "deliveryStart">;

@@ -1,18 +1,27 @@
 import { CORRECTION_FACTOR, EVChargeCalculatorConfig, useEVChargeCalculator } from "@/features/charge-price-calculator";
-import { Card, Grid, Typography } from "@mui/material";
+import { Box, Card, Grid, Typography } from "@mui/material";
 import { ChargeChart } from "./charge-chart";
+import { useEffect, useRef } from "react";
 
 export function ChargeResults(props: EVChargeCalculatorConfig) {
+  const divRef = useRef<HTMLDivElement>();
+
   const { chargedKwh, totalPrice, averagePricePerKwh, totalTime, summary, error } = useEVChargeCalculator(props);
   const results = [
-    { title: "Charged kW", value: `${chargedKwh.toFixed(2)}kW`, color: "primary" },
     { title: "Total price", value: `${totalPrice.toFixed(2)}€`, color: "secondary" },
     { title: "Avg price per kW", value: `${averagePricePerKwh.toFixed(2)}€/kW`, color: "success" },
+    { title: "Charged kW", value: `${chargedKwh.toFixed(2)}kW`, color: "primary" },
     { title: "Time", value: `${new Date(totalTime * 1000).toISOString().substring(11, 19)}`, color: "success" },
   ];
 
+  useEffect(() => {
+    if (divRef.current) {
+      divRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   return (
-    <>
+    <Box ref={divRef}>
       <Typography variant="h2" component="h2" textAlign="center" gutterBottom>
         Results
       </Typography>
@@ -40,6 +49,6 @@ export function ChargeResults(props: EVChargeCalculatorConfig) {
           <ChargeChart chargeSummary={summary} />
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 }
