@@ -1,7 +1,7 @@
 "use client";
 
 import { VehiclePartial, useGetVehiclesQuery } from "@/features/vehicles";
-import { Autocomplete, Box, Button, Grid, Paper, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, Link, Paper, TextField, Typography } from "@mui/material";
 import { useDebounce, useLocalStorage } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -193,6 +193,15 @@ export function ChargeDetailsStep({ onSubmit }: Props) {
             <Button type="submit" variant="contained" color="primary" fullWidth disabled={!isValid}>
               Process
             </Button>
+          </Box>
+
+          <Box textAlign="center" mt={3}>
+            <Typography variant="caption" fontStyle="italic">
+              Have you found a bug or samething new to suggest?{" "}
+              <Link color="primary" href={"https://github.com/stefanone91/my-ev-toolbox/issues/new"} target="_blank">
+                Open a Github issue.
+              </Link>
+            </Typography>
           </Box>
         </form>
       </Box>
