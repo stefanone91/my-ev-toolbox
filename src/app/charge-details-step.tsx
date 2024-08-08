@@ -12,6 +12,7 @@ export interface FormInputs {
   endPercentage: number;
   pricePerMinute: number;
   pricePerKwh: number;
+  chargingStationPower: number;
 }
 
 interface Props {
@@ -35,6 +36,7 @@ export function ChargeDetailsStep({ onSubmit }: Props) {
       endPercentage: 80,
       pricePerMinute: 0.3,
       pricePerKwh: 0.3,
+      chargingStationPower: 300,
     },
   });
 
@@ -66,7 +68,14 @@ export function ChargeDetailsStep({ onSubmit }: Props) {
                     }}
                     onInputChange={(evt, value) => setSearch(value)}
                     renderInput={(params) => (
-                      <TextField {...params} margin="normal" label="Choose an EV" variant="outlined" fullWidth />
+                      <TextField
+                        {...params}
+                        margin="normal"
+                        label="Choose an EV"
+                        placeholder="Type to search..."
+                        variant="outlined"
+                        fullWidth
+                      />
                     )}
                   />
                 )}
@@ -152,6 +161,28 @@ export function ChargeDetailsStep({ onSubmit }: Props) {
                     margin="normal"
                     error={!!errors.pricePerKwh}
                     helperText={errors.pricePerKwh ? errors.pricePerKwh.message : ""}
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Controller
+                name="chargingStationPower"
+                control={control}
+                rules={{ required: "Charging station power is required", min: 0 }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    onChange={(event) => field.onChange(parseInt(event.target.value, 10))}
+                    label="Charging station power (kW)"
+                    type="number"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.chargingStationPower}
+                    helperText={errors.chargingStationPower ? errors.chargingStationPower.message : ""}
                   />
                 )}
               />

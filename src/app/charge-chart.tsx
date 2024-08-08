@@ -34,10 +34,11 @@ ChartJS.register(
 );
 
 interface Props {
+  chargingStationPower: number;
   chargeSummary: ChargeSummaryStep[];
 }
 
-export function ChargeChart({ chargeSummary }: Props) {
+export function ChargeChart({ chargingStationPower, chargeSummary }: Props) {
   const chartRef = useRef<ChartJS>(null);
   const [chartData, setChartData] = useState<ChartData>({ datasets: [] });
 
@@ -46,15 +47,26 @@ export function ChargeChart({ chargeSummary }: Props) {
     if (!chart) {
       return;
     }
-
+    const showChargingStationPower = chargeSummary.some((x) => x.kw > chargingStationPower);
     // Data
     setChartData({
       labels: chargeSummary.map((x) => `${x.soc}%`),
       datasets: [
+        ...(showChargingStationPower
+          ? [
+              {
+                type: "line" as const,
+                label: "Chargin station [kW]",
+                data: chargeSummary.map(() => chargingStationPower),
+                borderColor: "#d32f2f",
+                backgroundColor: "#d32f2f",
+              },
+            ]
+          : []),
         {
           type: "line" as const,
           label: "Speed [kW]",
-          data: chargeSummary.map((x) => x.kw),
+          data: chargeSummary.map((x) => Math.min(x.kw, chargingStationPower)),
           fill: "start",
           backgroundColor: (context: ScriptableContext<"line">) => {
             const ctx = context.chart.ctx;
@@ -79,7 +91,7 @@ export function ChargeChart({ chargeSummary }: Props) {
         },
       ],
     });
-  }, [chargeSummary]);
+  }, [chargeSummary, chargingStationPower]);
 
   return (
     <Box sx={{ height: "30vh", width: "100%" }}>

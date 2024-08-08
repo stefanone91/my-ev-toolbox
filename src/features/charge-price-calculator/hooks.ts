@@ -13,6 +13,7 @@ export function useEVChargeCalculator({
   endPercentage,
   pricePerMinute,
   pricePerKwh,
+  chargingStationPower,
 }: EVChargeCalculatorConfig) {
   const [error, setError] = useState<string | undefined>();
   const [summary, setSummary] = useState<ChargeSummaryStep[]>([]);
@@ -79,7 +80,9 @@ export function useEVChargeCalculator({
         continue;
       }
       const chargedKwh = (((element.soc - startPercentage) * batteryCapacity) / 100) * CORRECTION_FACTOR;
-      const seconds = prevElement.seconds + ((chargedKwh - prevElement.chargedKwh) * 3600) / element.kw;
+      const seconds =
+        prevElement.seconds +
+        ((chargedKwh - prevElement.chargedKwh) * 3600) / Math.min(element.kw, chargingStationPower);
       const cumulativePricePerKwh = chargedKwh * (pricePerKwh || 0);
       const cumulativePricePerMinute = (seconds / 60) * (pricePerMinute || 0);
       const cumulativePrice = cumulativePricePerKwh + cumulativePricePerMinute;
@@ -95,7 +98,7 @@ export function useEVChargeCalculator({
 
     setError(undefined);
     setSummary(results);
-  }, [batteryCapacity, chargeCurve, startPercentage, pricePerMinute, pricePerKwh, endPercentage]);
+  }, [batteryCapacity, chargeCurve, startPercentage, pricePerMinute, pricePerKwh, endPercentage, chargingStationPower]);
 
   // Calculate final values upon summary
   useEffect(() => {

@@ -15,4 +15,5 @@ export type EVChargeCalculatorConfig = {
   endPercentage: number;
   pricePerMinute?: number;
   pricePerKwh?: number;
+  chargingStationPower: number;
 };

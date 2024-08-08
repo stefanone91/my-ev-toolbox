@@ -1,5 +1,5 @@
 import { CORRECTION_FACTOR, EVChargeCalculatorConfig, useEVChargeCalculator } from "@/features/charge-price-calculator";
-import { Box, Card, Grid, Typography } from "@mui/material";
+import { Alert, Box, Card, Grid, Typography } from "@mui/material";
 import { ChargeChart } from "./charge-chart";
 import { useEffect, useRef } from "react";
 
@@ -22,14 +22,24 @@ export function ChargeResults(props: EVChargeCalculatorConfig) {
 
   return (
     <Box ref={divRef}>
-      <Typography variant="h2" component="h2" textAlign="center" gutterBottom>
-        Results
-      </Typography>
+      <Box mb={4}>
+        <Typography variant="h2" component="h2" textAlign="center">
+          Results
+        </Typography>
+      </Box>
 
-      <Typography fontStyle="italic" my={4}>
-        This calculator uses a correction factor of {((CORRECTION_FACTOR - 1) * 100).toFixed(0)}% in order to better
-        reflect real charging values and side factors (such as efficiency, battery temperature, etc.)
-      </Typography>
+      {!props.chargeCurve?.length && (
+        <Box mb={2}>
+          <Alert severity="error">The selected EV has no charging curve data. No results will be shown.</Alert>
+        </Box>
+      )}
+
+      <Box mb={4}>
+        <Typography fontStyle="italic">
+          This calculator uses a correction factor of {((CORRECTION_FACTOR - 1) * 100).toFixed(0)}% in order to better
+          reflect real charging values and side factors (such as efficiency, battery temperature, etc.)
+        </Typography>
+      </Box>
 
       <Grid container spacing={3}>
         {results.map((x) => (
@@ -46,7 +56,7 @@ export function ChargeResults(props: EVChargeCalculatorConfig) {
         ))}
 
         <Grid item xs={12}>
-          <ChargeChart chargeSummary={summary} />
+          <ChargeChart chargingStationPower={props.chargingStationPower} chargeSummary={summary} />
         </Grid>
       </Grid>
     </Box>
